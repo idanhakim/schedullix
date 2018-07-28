@@ -25,17 +25,8 @@ app.use(session({
     }
 }))
 
-// const addToyRoutes = require('./routes/toyRoute')
-// addToyRoutes(app)
-
 const addUserRoutes = require('./routes/userRoute')
-addUserRoutes(app)
-
-// const addReviewRoutes = require('./routes/reviewRoute')
-// addReviewRoutes(app)
-
-
-
+addUserRoutes(app);
 
 const port = process.env.PORT || 3000
 

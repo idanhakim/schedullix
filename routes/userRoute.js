@@ -16,12 +16,12 @@ module.exports = (app) => {
             .catch(err => {console.log('some problem')})
     })
         
-    // app.post('/users/setUser', (req, res) => {
-    //     userService.checkForUser(req.body)
-    //         .then(user => {
-    //             req.session.loggedinUser = user
-    //             res.json(user)
-    //         })
-    //         .catch(err =>  {console.log('wrong username!!')})
-    // })
+    app.post('/users/setUser', (req, res) => {
+        userService.checkForUser(req.body)
+            .then(user => {
+                req.session.loggedinUser = user
+                res.json(user)
+            })
+            .catch(err =>  {console.log('wrong username!!')})
+    })
 }
