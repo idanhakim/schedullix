@@ -8,8 +8,8 @@ const app = express()
 // const reviewService = require('./services/reviewService')
 
 app.use(cors({
-    origin: ['http://localhost:8080'],
-    credentials: true // enable set cookie
+    credentials: true,
+    origin: 'http://localhost:3000'
 }));
 
 app.use(bodyParser.json())
