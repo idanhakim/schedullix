@@ -4,7 +4,8 @@ const DB_NAME = 'user';
 module.exports = {
     query,
     checkForUser,
-    addUser
+    addUser,
+    addCustomer
 }
 
 function query() {
@@ -16,17 +17,37 @@ function query() {
         })
 }
 
+function addCustomer(userId, customerToAdd) {
+    console.log('service back add customer', customerToAdd);
+    console.log('user ID', userId);
+    
+
+    return connectToMongo()
+        .then(db => {
+            const collection = db.collection(DB_NAME);
+            collection.update({"_id": new ObjectId(userId)},
+                                {$push: {"customers": customerToAdd}
+                })
+                .then(_ => console.log('customer ADD!'))
+                .catch(_ => console.log('customer not ADD!'))
+        })
+
+
+}
+
 function checkForUser(loginInfo) {
     return connectToMongo()
-    .then(db => {
-        const collection = db.collection(DB_NAME);
-        return collection.findOne({ email: loginInfo.email, password: loginInfo.password})
-            .then(user => {
-                console.log('user in service backend', user)
-                if (!user) return Promise.reject('wrong username!')
-                return user
-            })
-    })
+        .then(db => {
+            const collection = db.collection(DB_NAME);
+            return collection.findOne({
+                    email: loginInfo.email,
+                    password: loginInfo.password
+                })
+                .then(user => {
+                    if (!user) return Promise.reject('wrong username!')
+                    return user
+                })
+        })
 }
 
 function addUser(signUpInfo) {
