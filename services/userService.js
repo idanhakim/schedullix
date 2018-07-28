@@ -3,7 +3,7 @@ const DB_NAME = 'user';
 
 module.exports = {
     query,
-    // checkForUser,
+    checkForUser
 }
 
 function query() {
@@ -15,18 +15,14 @@ function query() {
         })
 }
 
-// function checkForUser({username}) {
-//     return connectToMongo()
-//     .then(db => {
-//         const collection = db.collection(DB_NAME);
-//         let currUser = collection.findOne({ nickname: username})
-//         return Promise.resolve(currUser)
-//     })
-// }
-
-
-
-
+function checkForUser(loginInfo) {
+    return connectToMongo()
+    .then(db => {
+        const collection = db.collection(DB_NAME);
+        let currUser = collection.findOne({ email: loginInfo.email, password: loginInfo.password})
+        return Promise.resolve(currUser)
+    })
+}
 
 function connectToMongo() {
     const MongoClient = require('mongodb').MongoClient;
