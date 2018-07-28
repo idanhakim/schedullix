@@ -19,8 +19,12 @@ function checkForUser(loginInfo) {
     return connectToMongo()
     .then(db => {
         const collection = db.collection(DB_NAME);
-        let currUser = collection.findOne({ email: loginInfo.email, password: loginInfo.password})
-        return Promise.resolve(currUser)
+        return collection.findOne({ email: loginInfo.email, password: loginInfo.password})
+            .then(user => {
+                console.log('user in service backend', user)
+                if (!user) return Promise.reject('wrong username!')
+                return user
+            })
     })
 }
 

@@ -22,6 +22,6 @@ module.exports = (app) => {
                 req.session.loggedinUser = user
                 res.json(user)
             })
-            .catch(err =>  {console.log('wrong username!!')})
+            .catch(err =>  {console.log('Wrong username or password')})
     })
 }
