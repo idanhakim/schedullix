@@ -8,12 +8,12 @@ const app = express()
 // const reviewService = require('./services/reviewService')
 
 app.use(cors({
-    credentials: true,
-    origin: 'http://localhost:3000'
+    origin: ['http://localhost:8080'],
+    credentials: true // enable set cookie
 }));
 
 app.use(bodyParser.json())
-app.use(express.static('dist'))
+app.use(express.static('dist')) 
 app.use(cookieParser())
 
 app.use(session({
@@ -25,8 +25,17 @@ app.use(session({
     }
 }))
 
+// const addToyRoutes = require('./routes/toyRoute')
+// addToyRoutes(app)
+
 const addUserRoutes = require('./routes/userRoute')
-addUserRoutes(app);
+addUserRoutes(app)
+
+// const addReviewRoutes = require('./routes/reviewRoute')
+// addReviewRoutes(app)
+
+
+
 
 const port = process.env.PORT || 3000
 

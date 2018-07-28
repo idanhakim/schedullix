@@ -3,7 +3,8 @@ const DB_NAME = 'user';
 
 module.exports = {
     query,
-    checkForUser
+    checkForUser,
+    addUser
 }
 
 function query() {
@@ -23,6 +24,19 @@ function checkForUser(loginInfo) {
             .then(user => {
                 console.log('user in service backend', user)
                 if (!user) return Promise.reject('wrong username!')
+                return user
+            })
+    })
+}
+
+function addUser(signUpInfo) {
+    return connectToMongo()
+    .then(db => {
+        const collection = db.collection(DB_NAME);
+        return collection.insert(signUpInfo)
+            .then(user => {
+                console.log('user in service backend', user)
+                if (!user) return Promise.reject('user wasnt added!')
                 return user
             })
     })

@@ -17,11 +17,23 @@ module.exports = (app) => {
     })
         
     app.post('/users/login', (req, res) => {
+        
         userService.checkForUser(req.body)
+        .then(user => {
+            req.session.loggedinUser = user
+            res.json(user)
+        })
+        .catch(err =>  {console.log('Wrong username or password')})
+    })
+    
+    app.post('/users', (req, res) => {
+        console.log('hi');
+        userService.addUser(req.body)
             .then(user => {
                 req.session.loggedinUser = user
                 res.json(user)
             })
             .catch(err =>  {console.log('Wrong username or password')})
     })
+
 }
