@@ -16,7 +16,7 @@ module.exports = (app) => {
             .catch(err => {console.log('some problem')})
     })
         
-    app.post('/users/setUser', (req, res) => {
+    app.post('/users/login', (req, res) => {
         userService.checkForUser(req.body)
             .then(user => {
                 req.session.loggedinUser = user

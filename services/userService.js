@@ -15,11 +15,11 @@ function query() {
         })
 }
 
-function checkForUser({username}) {
+function checkForUser(loginInfo) {
     return connectToMongo()
     .then(db => {
         const collection = db.collection(DB_NAME);
-        let currUser = collection.findOne({ nickname: username})
+        let currUser = collection.findOne({ email: loginInfo.email, password: loginInfo.password})
         return Promise.resolve(currUser)
     })
 }
