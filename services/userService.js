@@ -5,7 +5,27 @@ module.exports = {
     query,
     checkForUser,
     addUser,
-    addCustomer
+    addCustomer,
+    updateUser
+}
+
+function updateUser(user) {
+    return connectToMongo()
+        .then(db => {
+            const collection = db.collection(DB_NAME);
+            collection.update({
+                    "_id": new ObjectId(user._id)
+                }, {
+                    $set: {
+                        "location": user.location,
+                        "timePerCustomer": user.timePerCustomer,
+                        "workingHours": user.workingHours,
+                        "configElements": user.configElements
+                    }
+                })
+                .then(_ => console.log('customer ADD!'))
+                .catch(_ => console.log('customer not ADD!'))
+        })
 }
 
 function query() {
@@ -18,21 +38,19 @@ function query() {
 }
 
 function addCustomer(userId, customerToAdd) {
-    console.log('service back add customer', customerToAdd);
-    console.log('user ID', userId);
-    
-
     return connectToMongo()
         .then(db => {
             const collection = db.collection(DB_NAME);
-            collection.update({"_id": new ObjectId(userId)},
-                                {$push: {"customers": customerToAdd}
+            collection.update({
+                    "_id": new ObjectId(userId)
+                }, {
+                    $push: {
+                        "customers": customerToAdd
+                    }
                 })
                 .then(_ => console.log('customer ADD!'))
                 .catch(_ => console.log('customer not ADD!'))
         })
-
-
 }
 
 function checkForUser(loginInfo) {
@@ -52,15 +70,15 @@ function checkForUser(loginInfo) {
 
 function addUser(signUpInfo) {
     return connectToMongo()
-    .then(db => {
-        const collection = db.collection(DB_NAME);
-        return collection.insert(signUpInfo)
-            .then(user => {
-                console.log('user in service backend', user)
-                if (!user) return Promise.reject('user wasnt added!')
-                return user
-            })
-    })
+        .then(db => {
+            const collection = db.collection(DB_NAME);
+            return collection.insert(signUpInfo)
+                .then(user => {
+                    console.log('user in service backend', user)
+                    if (!user) return Promise.reject('user wasnt added!')
+                    return user
+                })
+        })
 }
 
 function connectToMongo() {

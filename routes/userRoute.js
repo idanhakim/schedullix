@@ -44,4 +44,9 @@ module.exports = (app) => {
             .catch(err => console.log('Customer not Add!'))
     })
 
+    app.put(`${USER_URL}/updateUser`, (req, res) => {
+        userService.updateUser(req.body)
+            .then(res => console.log('User Update!'))
+            .catch(err => console.log('User no Update!'))
+    })
 }
