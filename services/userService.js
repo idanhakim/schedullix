@@ -17,14 +17,18 @@ function updateUser(user) {
                     "_id": new ObjectId(user._id)
                 }, {
                     $set: {
+                        "password":user.password,
+                        "email":user.email,
+                        "phone":user.phone,
+                        "businessName":user.businessName,
                         "location": user.location,
                         "timePerCustomer": user.timePerCustomer,
                         "workingHours": user.workingHours,
                         "configElements": user.configElements
                     }
                 })
-                .then(_ => console.log('customer ADD!'))
-                .catch(_ => console.log('customer not ADD!'))
+                .then(_ => console.log('user update!'))
+                .catch(_ => console.log('customer not update!'))
         })
 }
 
