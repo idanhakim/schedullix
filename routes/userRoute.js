@@ -13,7 +13,18 @@ module.exports = (app) => {
             })
     })
 
-    // Route for Login User
+    app.get(`${USER_URL}/:userId`, (req, res) => {
+        const userId = req.params.userId
+        console.log('userRoute', userId)
+        return userService.getUserById(userId)
+            .then(user => {
+                res.json(user)
+            })
+            .catch(err => {
+                console.log('some problem')
+            })
+    })
+
     app.post(`${USER_URL}/login`, (req, res) => {
         userService.checkForUser(req.body)
         .then(user => {
