@@ -7,7 +7,8 @@ module.exports = {
     addUser,
     addCustomer,
     updateUser,
-    getUserCustomers
+    getUserCustomers,
+    getUserById
 }
 
 function updateUser(user) {
@@ -102,6 +103,15 @@ function addUser(signUpInfo) {
                     if (!user) return Promise.reject('user wasnt added!')
                     return user
                 })
+        })
+}
+
+function getUserById(userId) {
+    return connectToMongo()
+        .then(db => {
+            const collection = db.collection(DB_NAME);
+            let user = collection.findOne({"_id": new ObjectId(userId)})
+            return Promise.resolve(user)
         })
 }
 

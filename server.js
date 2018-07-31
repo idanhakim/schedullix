@@ -3,7 +3,6 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 const cors = require('cors');
 const cookieParser = require('cookie-parser')
-const toyService = require('./services/toyService')
 const app = express()
 // const reviewService = require('./services/reviewService')
 
