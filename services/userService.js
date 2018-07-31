@@ -6,7 +6,8 @@ module.exports = {
     checkForUser,
     addUser,
     addCustomer,
-    updateUser
+    updateUser,
+    getUserCustomers
 }
 
 function updateUser(user) {
@@ -68,6 +69,25 @@ function checkForUser(loginInfo) {
                 .then(user => {
                     if (!user) return Promise.reject('wrong username!')
                     return user
+                })
+        })
+}
+
+function getUserCustomers(userId) {
+    console.log('backend service,vuser id:', userId);
+    
+    var id = ObjectId(userId)
+    return connectToMongo()
+        .then(db => {
+            const collection = db.collection(DB_NAME);
+            return collection.findOne({
+                    _id: id,
+                })
+                .then(user => {
+                    console.log('result mongo: user-', user);
+                    
+                    if (!user) return Promise.reject('wrong username!')
+                    return Promise.resolve(user.customers)
                 })
         })
 }

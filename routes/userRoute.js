@@ -17,6 +17,21 @@ module.exports = (app) => {
                 console.log('some problem')
             })
     })
+    app.post(`${USER_URL}/customers`, (req, res) => {
+        var userId = req.body.userId
+        console.log('Route, user ID=', userId)
+    
+        return userService.getUserCustomers(userId)
+            .then(customers => {
+                console.log('resolve from db');
+                console.log('res from db',customers );
+                return res.json(customers)
+            })
+            .catch(err => {
+                console.log('rege from db');
+                return console.log('some problem')
+            })
+    })
 
     app.post(`${USER_URL}/login`, (req, res) => {
         userService.checkForUser(req.body)
