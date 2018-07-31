@@ -40,7 +40,19 @@ module.exports = (app) => {
             })
     })
 
+    app.get(`${USER_URL}/business/:businessName`, (req, res) => {
+        const businessName = req.params.businessName
+        return userService.getUserByBusinessName(businessName)
+            .then(user => {
+                res.json(user)
+            })
+            .catch(err => {
+                console.log('some problem')
+            })
+    })
+
     app.post(`${USER_URL}/login`, (req, res) => {
+        console.log('backend reqbody',req.body)
         userService.checkForUser(req.body)
         .then(user => {
             req.session.loggedinUser = user

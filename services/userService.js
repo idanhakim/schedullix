@@ -8,7 +8,8 @@ module.exports = {
     addCustomer,
     updateUser,
     getUserCustomers,
-    getUserById
+    getUserById,
+    getUserByBusinessName
 }
 
 function updateUser(user) {
@@ -113,6 +114,20 @@ function getUserById(userId) {
             let user = collection.findOne({"_id": new ObjectId(userId)})
             return Promise.resolve(user)
         })
+}
+
+function getUserByBusinessName(businessName) {
+    return connectToMongo()
+    .then(db => {
+        const collection = db.collection(DB_NAME);
+        return collection.findOne({"businessName": businessName})
+        .then(res => {
+            return Promise.resolve(res)
+        })
+        .catch(err => {
+            console.log('not good', err)
+        })
+    })
 }
 
 function connectToMongo() {
