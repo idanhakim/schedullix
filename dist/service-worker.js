@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.4.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.c696d6063de1274aa905ef6b548f59c6.js"
+  "/precache-manifest.4ed7f954bc34a6f1d4c07e4060789cb7.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "sprint-proj"});
