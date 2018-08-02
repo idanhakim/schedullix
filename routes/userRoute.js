@@ -28,6 +28,13 @@ module.exports = (app) => {
             })
     })
 
+    app.delete(`${USER_URL}/removeCustomer`, (req, res) => {
+        return userService.removeCustomer()
+            .then(() => {
+                console.log('deleted')
+            })
+    })
+
     app.get(`${USER_URL}/:userId`, (req, res) => {
         const userId = req.params.userId
         console.log('userRoute', userId)
