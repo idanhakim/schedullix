@@ -12,14 +12,15 @@ module.exports = (app) => {
                 console.log('some problem')
             })
     })
+
     app.post(`${USER_URL}/customers`, (req, res) => {
         var userId = req.body.userId
         console.log('Route, user ID=', userId)
-    
+
         return userService.getUserCustomers(userId)
             .then(customers => {
                 console.log('resolve from db');
-                console.log('res from db',customers );
+                console.log('res from db', customers);
                 return res.json(customers)
             })
             .catch(err => {
@@ -59,15 +60,15 @@ module.exports = (app) => {
     })
 
     app.post(`${USER_URL}/login`, (req, res) => {
-        console.log('backend reqbody',req.body)
         userService.checkForUser(req.body)
-        .then(user => {
-            req.session.loggedinUser = user
-            res.json(user)
-        })
-        .catch(err =>  {console.log('Wrong username or password')})
+            .then(user => {
+                req.session.loggedinUser = user
+                res.json(user)
+            })
+            .catch(err => {
+                console.log('Wrong username or password')
+            })
     })
-    
 
     app.post('/users', (req, res) => {
         userService.addUser(req.body)
@@ -87,8 +88,16 @@ module.exports = (app) => {
             .catch(err => console.log('Customer not Add!'))
     })
 
-    app.put(`${USER_URL}/updateUser`, (req, res) => {      
+    app.put(`${USER_URL}/updateUser`, (req, res) => {
         userService.updateUser(req.body)
+            .then(res => console.log('User Update!'))
+            .catch(err => console.log('User no Update!'))
+    })
+
+    app.post(`${USER_URL}/removeCustomer`, (req, res) => {
+        console.log('back, remove: ', req.body);
+
+        userService.removeCustomer(req.body)
             .then(res => console.log('User Update!'))
             .catch(err => console.log('User no Update!'))
     })
