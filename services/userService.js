@@ -9,7 +9,8 @@ module.exports = {
     updateUser,
     getUserCustomers,
     getUserById,
-    getUserByBusinessName
+    getUserByBusinessName,
+    removeCustomer
 }
 
 function updateUser(user) {
@@ -92,6 +93,21 @@ function getUserCustomers(userId) {
                     return Promise.resolve(user.customers)
                 })
         })
+}
+
+
+// check how to remove from db
+function removeCustomer(customerTime) {
+    // return connectToMongo()
+    // .then(db => {
+    //     const collection = db.collection(DB_NAME);
+    //     return collection.findOne({
+    //             _id: id,
+    //         })
+    //         .then(() => {
+    //             console.log('deleted');
+    //         })
+    // })
 }
 
 function addUser(signUpInfo) {

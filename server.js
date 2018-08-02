@@ -4,6 +4,8 @@ const session = require('express-session')
 const cors = require('cors');
 const cookieParser = require('cookie-parser')
 const app = express()
+const http = require('http').Server(app)
+const io = require('socket.io')(http)
 // const reviewService = require('./services/reviewService')
 
 app.use(cors({
@@ -24,6 +26,10 @@ app.use(session({
     }
 }))
 
+io.on('connection', function(socket){
+    console.log('a user connected');
+});
+
 // const addToyRoutes = require('./routes/toyRoute')
 // addToyRoutes(app)
 
@@ -37,7 +43,7 @@ addUserRoutes(app)
 
 
 const port = process.env.PORT || 3000
-
-app.listen(port, () => {
+// change to http
+http.listen(port, () => {
     console.log(`App litening on port ${port}!`)
 })
