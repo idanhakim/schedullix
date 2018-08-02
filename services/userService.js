@@ -21,10 +21,10 @@ function updateUser(user) {
                     "_id": new ObjectId(user._id)
                 }, {
                     $set: {
-                        "password":user.password,
-                        "email":user.email,
-                        "phone":user.phone,
-                        "businessName":user.businessName,
+                        "password": user.password,
+                        "email": user.email,
+                        "phone": user.phone,
+                        "businessName": user.businessName,
                         "location": user.location,
                         "timePerCustomer": user.timePerCustomer,
                         "workingHours": user.workingHours,
@@ -77,8 +77,6 @@ function checkForUser(loginInfo) {
 }
 
 function getUserCustomers(userId) {
-    console.log('backend service,vuser id:', userId);
-    
     var id = ObjectId(userId)
     return connectToMongo()
         .then(db => {
@@ -88,26 +86,29 @@ function getUserCustomers(userId) {
                 })
                 .then(user => {
                     console.log('result mongo: user-', user);
-                    
+
                     if (!user) return Promise.reject('wrong username!')
                     return Promise.resolve(user.customers)
                 })
         })
 }
 
-
-// check how to remove from db
-function removeCustomer(customerTime) {
-    // return connectToMongo()
-    // .then(db => {
-    //     const collection = db.collection(DB_NAME);
-    //     return collection.findOne({
-    //             _id: id,
-    //         })
-    //         .then(() => {
-    //             console.log('deleted');
-    //         })
-    // })
+function removeCustomer(removeInfo) {
+    var id = ObjectId(removeInfo.userId)
+    return connectToMongo()
+        .then(db => {
+            const collection = db.collection(DB_NAME);
+            return collection.update({_id: id,}, 
+                {$pull: {customers: {time: removeInfo.customerTime}}},
+                { multi: true }
+            )
+                .then(() => {
+                    return console.log('deleted customer');
+                })
+                .catch(() => {
+                    return console.log('deleted no customer');
+                })
+        })
 }
 
 function addUser(signUpInfo) {
@@ -127,23 +128,27 @@ function getUserById(userId) {
     return connectToMongo()
         .then(db => {
             const collection = db.collection(DB_NAME);
-            let user = collection.findOne({"_id": new ObjectId(userId)})
+            let user = collection.findOne({
+                "_id": new ObjectId(userId)
+            })
             return Promise.resolve(user)
         })
 }
 
 function getUserByBusinessName(businessName) {
     return connectToMongo()
-    .then(db => {
-        const collection = db.collection(DB_NAME);
-        return collection.findOne({"businessName": businessName})
-        .then(res => {
-            return Promise.resolve(res)
+        .then(db => {
+            const collection = db.collection(DB_NAME);
+            return collection.findOne({
+                    "businessName": businessName
+                })
+                .then(res => {
+                    return Promise.resolve(res)
+                })
+                .catch(err => {
+                    console.log('not good', err)
+                })
         })
-        .catch(err => {
-            console.log('not good', err)
-        })
-    })
 }
 
 function connectToMongo() {
