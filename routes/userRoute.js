@@ -14,17 +14,13 @@ module.exports = (app) => {
     })
 
     app.post(`${USER_URL}/customers`, (req, res) => {
-        var userId = req.body.userId
-        console.log('Route, user ID=', userId)
+        var userId = req.body.userId;
 
         return userService.getUserCustomers(userId)
             .then(customers => {
-                console.log('resolve from db');
-                console.log('res from db', customers);
                 return res.json(customers)
             })
             .catch(err => {
-                console.log('rege from db');
                 return console.log('some problem')
             })
     })
@@ -38,7 +34,6 @@ module.exports = (app) => {
 
     app.get(`${USER_URL}/:userId`, (req, res) => {
         const userId = req.params.userId
-        console.log('userRoute', userId)
         return userService.getUserById(userId)
             .then(user => {
                 res.json(user)
@@ -95,8 +90,6 @@ module.exports = (app) => {
     })
 
     app.post(`${USER_URL}/removeCustomer`, (req, res) => {
-        console.log('back, remove: ', req.body);
-
         userService.removeCustomer(req.body)
             .then(res => console.log('User Update!'))
             .catch(err => console.log('User no Update!'))

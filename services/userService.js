@@ -1,3 +1,4 @@
+const mongoService = require('./mongo-service')
 const ObjectId = require('mongodb').ObjectId;
 const DB_NAME = 'user';
 
@@ -14,7 +15,7 @@ module.exports = {
 }
 
 function updateUser(user) {
-    return connectToMongo()
+    return mongoService.connect()
         .then(db => {
             const collection = db.collection(DB_NAME);
             collection.update({
@@ -37,7 +38,7 @@ function updateUser(user) {
 }
 
 function query() {
-    return connectToMongo()
+    return mongoService.connect()
         .then(db => {
             const collection = db.collection(DB_NAME);
             let users = collection.find({}).toArray()
@@ -46,7 +47,7 @@ function query() {
 }
 
 function addCustomer(userId, customerToAdd) {
-    return connectToMongo()
+    return mongoService.connect()
         .then(db => {
             const collection = db.collection(DB_NAME);
             collection.update({
@@ -62,7 +63,7 @@ function addCustomer(userId, customerToAdd) {
 }
 
 function checkForUser(loginInfo) {
-    return connectToMongo()
+    return mongoService.connect()
         .then(db => {
             const collection = db.collection(DB_NAME);
             return collection.findOne({
@@ -78,15 +79,13 @@ function checkForUser(loginInfo) {
 
 function getUserCustomers(userId) {
     var id = ObjectId(userId)
-    return connectToMongo()
+    return mongoService.connect()
         .then(db => {
             const collection = db.collection(DB_NAME);
             return collection.findOne({
                     _id: id,
                 })
                 .then(user => {
-                    console.log('result mongo: user-', user);
-
                     if (!user) return Promise.reject('wrong username!')
                     return Promise.resolve(user.customers)
                 })
@@ -95,13 +94,20 @@ function getUserCustomers(userId) {
 
 function removeCustomer(removeInfo) {
     var id = ObjectId(removeInfo.userId)
-    return connectToMongo()
+    return mongoService.connect()
         .then(db => {
             const collection = db.collection(DB_NAME);
-            return collection.update({_id: id,}, 
-                {$pull: {customers: {time: removeInfo.customerTime}}},
-                { multi: true }
-            )
+            return collection.update({
+                    _id: id,
+                }, {
+                    $pull: {
+                        customers: {
+                            time: removeInfo.customerTime
+                        }
+                    }
+                }, {
+                    multi: true
+                })
                 .then(() => {
                     return console.log('deleted customer');
                 })
@@ -112,12 +118,11 @@ function removeCustomer(removeInfo) {
 }
 
 function addUser(signUpInfo) {
-    return connectToMongo()
+    return mongoService.connect()
         .then(db => {
             const collection = db.collection(DB_NAME);
             return collection.insert(signUpInfo)
                 .then(user => {
-                    console.log('user in service backend', user)
                     if (!user) return Promise.reject('user wasnt added!')
                     return user
                 })
@@ -125,7 +130,7 @@ function addUser(signUpInfo) {
 }
 
 function getUserById(userId) {
-    return connectToMongo()
+    return mongoService.connect()
         .then(db => {
             const collection = db.collection(DB_NAME);
             let user = collection.findOne({
@@ -136,7 +141,7 @@ function getUserById(userId) {
 }
 
 function getUserByBusinessName(businessName) {
-    return connectToMongo()
+    return mongoService.connect()
         .then(db => {
             const collection = db.collection(DB_NAME);
             return collection.findOne({
@@ -151,9 +156,9 @@ function getUserByBusinessName(businessName) {
         })
 }
 
-function connectToMongo() {
-    const MongoClient = require('mongodb').MongoClient;
-    const url = 'mongodb://sprint4:sprint123@ds163730.mlab.com:63730/user_db';
-    return MongoClient.connect(url)
-        .then(client => client.db())
-}
+// function connectToMongo() {
+//     const MongoClient = require('mongodb').MongoClient;
+//     const url = 'mongodb://sprint4:sprint123@ds163730.mlab.com:63730/user_db';
+//     return MongoClient.connect(url)
+//         .then(client => client.db())
+// }

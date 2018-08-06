@@ -14,7 +14,7 @@ app.use(cors({
 }));
 
 app.use(bodyParser.json())
-app.use(express.static('dist')) 
+app.use(express.static('dist'))
 app.use(cookieParser())
 
 app.use(session({
@@ -26,7 +26,7 @@ app.use(session({
     }
 }))
 
-io.on('connection', function(socket){
+io.on('connection', function (socket) {
     console.log('a user connected');
 });
 
@@ -44,6 +44,6 @@ addUserRoutes(app)
 
 const port = process.env.PORT || 3000
 // change to http
-http.listen(port, () => {
+app.listen(port, () => {
     console.log(`App litening on port ${port}!`)
 })
