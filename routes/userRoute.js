@@ -83,7 +83,7 @@ module.exports = (app) => {
 
     // Route for add Customer
     app.put(`${USER_URL}/:userId/addCustomer`, (req, res) => {
-        userService.addCustomer(req.body.userId, req.body.customer)
+        userService.addCustomer(req.params.userId, req.body)
             .then(res => console.log('Customer Add!'))
             .catch(err => console.log('Customer not Add!'))
     })
