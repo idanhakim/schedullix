@@ -88,7 +88,7 @@ function getUserCustomers(userId) {
                     console.log('result mongo: user-', user);
 
                     if (!user) return Promise.reject('wrong username!')
-                    return Promise.resolve(user.customers)
+                    return Promise.resolve(user)
                 })
         })
 }
