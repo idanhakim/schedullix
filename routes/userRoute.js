@@ -50,6 +50,7 @@ module.exports = (app) => {
 
     app.get(`${USER_URL}/business/:businessName`, (req, res) => {
         const businessName = req.params.businessName
+        console.log('userRoute', businessName)
         return userService.getUserByBusinessName(businessName)
             .then(user => {
                 res.json(user)
