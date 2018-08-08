@@ -87,7 +87,7 @@ function getUserCustomers(userId) {
                 })
                 .then(user => {
                     if (!user) return Promise.reject('wrong username!')
-                    return Promise.resolve(user.customers)
+                    return Promise.resolve(user)
                 })
         })
 }
